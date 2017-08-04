@@ -11,6 +11,10 @@
 		68A35B4C1F318018001BCBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A35B4B1F318018001BCBE4 /* AppDelegate.m */; };
 		68A35B4E1F318018001BCBE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68A35B4D1F318018001BCBE4 /* Assets.xcassets */; };
 		68A35B511F318018001BCBE4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68A35B4F1F318018001BCBE4 /* LaunchScreen.storyboard */; };
+		68A35B5A1F318029001BCBE4 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A35B591F318029001BCBE4 /* MainViewController.m */; };
+		68B3711C1F341BE5005829CD /* DSTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B3711B1F341BE5005829CD /* DSTextStorage.m */; };
+		68B3711F1F341BF9005829CD /* DSLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B3711E1F341BF9005829CD /* DSLayoutManager.m */; };
+		68B371221F341C0C005829CD /* DSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B371211F341C0C005829CD /* DSTextContainer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +25,14 @@
 		68A35B4D1F318018001BCBE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68A35B501F318018001BCBE4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68A35B521F318018001BCBE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68A35B581F318029001BCBE4 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		68A35B591F318029001BCBE4 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		68B3711A1F341BE5005829CD /* DSTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTextStorage.h; sourceTree = "<group>"; };
+		68B3711B1F341BE5005829CD /* DSTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTextStorage.m; sourceTree = "<group>"; };
+		68B3711D1F341BF9005829CD /* DSLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSLayoutManager.h; sourceTree = "<group>"; };
+		68B3711E1F341BF9005829CD /* DSLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSLayoutManager.m; sourceTree = "<group>"; };
+		68B371201F341C0C005829CD /* DSTextContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTextContainer.h; sourceTree = "<group>"; };
+		68B371211F341C0C005829CD /* DSTextContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTextContainer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +67,14 @@
 			children = (
 				68A35B4A1F318018001BCBE4 /* AppDelegate.h */,
 				68A35B4B1F318018001BCBE4 /* AppDelegate.m */,
+				68A35B581F318029001BCBE4 /* MainViewController.h */,
+				68A35B591F318029001BCBE4 /* MainViewController.m */,
+				68B3711A1F341BE5005829CD /* DSTextStorage.h */,
+				68B3711B1F341BE5005829CD /* DSTextStorage.m */,
+				68B3711D1F341BF9005829CD /* DSLayoutManager.h */,
+				68B3711E1F341BF9005829CD /* DSLayoutManager.m */,
+				68B371201F341C0C005829CD /* DSTextContainer.h */,
+				68B371211F341C0C005829CD /* DSTextContainer.m */,
 				68A35B4D1F318018001BCBE4 /* Assets.xcassets */,
 				68A35B4F1F318018001BCBE4 /* LaunchScreen.storyboard */,
 				68A35B521F318018001BCBE4 /* Info.plist */,
@@ -141,8 +161,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68B3711F1F341BF9005829CD /* DSLayoutManager.m in Sources */,
+				68B371221F341C0C005829CD /* DSTextContainer.m in Sources */,
 				68A35B4C1F318018001BCBE4 /* AppDelegate.m in Sources */,
+				68A35B5A1F318029001BCBE4 /* MainViewController.m in Sources */,
 				68A35B491F318018001BCBE4 /* main.m in Sources */,
+				68B3711C1F341BE5005829CD /* DSTextStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +315,7 @@
 				68A35B571F318018001BCBE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
