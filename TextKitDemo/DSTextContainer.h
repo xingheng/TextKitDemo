@@ -10,4 +10,6 @@
 
 @interface DSTextContainer : NSTextContainer
 
+@property (nonatomic, assign) NSUInteger pageIndex;
+
 @end

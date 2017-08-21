@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6866FCBD1F41519D007971FA /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6866FCBC1F41519D007971FA /* PageContentViewController.m */; };
 		68A35B491F318018001BCBE4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A35B481F318018001BCBE4 /* main.m */; };
 		68A35B4C1F318018001BCBE4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A35B4B1F318018001BCBE4 /* AppDelegate.m */; };
 		68A35B4E1F318018001BCBE4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68A35B4D1F318018001BCBE4 /* Assets.xcassets */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6866FCBB1F41519D007971FA /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
+		6866FCBC1F41519D007971FA /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
 		68A35B441F318018001BCBE4 /* TextKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68A35B481F318018001BCBE4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68A35B4A1F318018001BCBE4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -71,6 +74,8 @@
 				68A35B4B1F318018001BCBE4 /* AppDelegate.m */,
 				68A35B581F318029001BCBE4 /* MainViewController.h */,
 				68A35B591F318029001BCBE4 /* MainViewController.m */,
+				6866FCBB1F41519D007971FA /* PageContentViewController.h */,
+				6866FCBC1F41519D007971FA /* PageContentViewController.m */,
 				68B3711A1F341BE5005829CD /* DSTextStorage.h */,
 				68B3711B1F341BE5005829CD /* DSTextStorage.m */,
 				68B3711D1F341BF9005829CD /* DSLayoutManager.h */,
@@ -167,6 +172,7 @@
 			files = (
 				68B3711F1F341BF9005829CD /* DSLayoutManager.m in Sources */,
 				68B371221F341C0C005829CD /* DSTextContainer.m in Sources */,
+				6866FCBD1F41519D007971FA /* PageContentViewController.m in Sources */,
 				68A35B4C1F318018001BCBE4 /* AppDelegate.m in Sources */,
 				68A35B5A1F318029001BCBE4 /* MainViewController.m in Sources */,
 				68A35B491F318018001BCBE4 /* main.m in Sources */,

@@ -9,6 +9,9 @@
 #import "DSLayoutManager.h"
 
 @interface DSLayoutManager () <NSLayoutManagerDelegate>
+{
+    BOOL fAllPagesLayoutFinished;
+}
 
 @end
 
@@ -18,20 +21,30 @@
 {
     if (self = [super init]) {
         self.delegate = self;
-        [self addTextContainer:[self _newTextContainer]];
     }
 
     return self;
 }
 
-#pragma mark - Private
+#pragma mark - Public
 
-- (NSTextContainer *)_newTextContainer
+- (DSTextContainer *)findTextContainerForPage:(NSUInteger)pageIndex
 {
-    NSTextContainer *textContainer = [NSTextContainer new];
+    for (DSTextContainer *item in self.textContainers) {
+        if (pageIndex == item.pageIndex) {
+            return item;
+        }
+    }
 
-    textContainer.size = CGSizeMake(320, 500);
-    return textContainer;
+    return nil;
+}
+
+- (BOOL)hasOutOfValidPageRange:(NSInteger)pageIndex
+{
+    DSTextContainer *firstContainer = (DSTextContainer *)self.textContainers.firstObject;
+    DSTextContainer *lastContainer = (DSTextContainer *)self.textContainers.lastObject;
+
+    return fAllPagesLayoutFinished && !(firstContainer.pageIndex <= pageIndex && pageIndex <= lastContainer.pageIndex);
 }
 
 #pragma mark - NSLayoutManagerDelegate
@@ -46,18 +59,19 @@
 
 - (void)layoutManagerDidInvalidateLayout:(NSLayoutManager *)sender
 {
-    NSLog(@"%s", __func__);
+//    NSLog(@"%s", __func__);
+    fAllPagesLayoutFinished = NO;
 }
 
 - (void)layoutManager:(NSLayoutManager *)layoutManager didCompleteLayoutForTextContainer:(nullable NSTextContainer *)textContainer atEnd:(BOOL)layoutFinishedFlag
 {
-    if (!textContainer && layoutFinishedFlag) {
-        [self addTextContainer:[self _newTextContainer]];
+    if (textContainer && layoutFinishedFlag) {
+        NSLog(@"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!It's over!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        fAllPagesLayoutFinished = YES;
         return;
     }
 
-    NSLog(@"%s", __func__);
-    return;
+#if 0
     CGRect usedRect = [layoutManager usedRectForTextContainer:textContainer];
     NSRange range = textContainer ? [layoutManager glyphRangeForTextContainer:textContainer] : NSMakeRange(0, 0);
 
@@ -73,11 +87,13 @@
             break;
         }
     }
+
+#endif
 }
 
 - (void)layoutManager:(NSLayoutManager *)layoutManager textContainer:(NSTextContainer *)textContainer didChangeGeometryFromSize:(CGSize)oldSize
 {
-    NSLog(@"%s", __func__);
+    NSLog(@"%s: %@, size: %@", __func__, textContainer, NSStringFromCGSize(oldSize));
 }
 
 @end

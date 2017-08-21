@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DSTextContainer.h"
 
 @interface DSLayoutManager : NSLayoutManager
+
+- (DSTextContainer *)findTextContainerForPage:(NSUInteger)pageIndex;
+
+- (BOOL)hasOutOfValidPageRange:(NSInteger)pageIndex;
 
 @end
