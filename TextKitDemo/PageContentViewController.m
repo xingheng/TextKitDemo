@@ -7,6 +7,7 @@
 //
 
 #import "PageContentViewController.h"
+#import "DSLayoutManager.h"
 
 #define InvalidPageIndex NSNotFound
 
@@ -147,13 +148,7 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-//    DSLayoutManager *layoutManager = (DSLayoutManager *)self.textStorage.layoutManagers.firstObject;
-//
-//    for (NSTextContainer *item in layoutManager.textContainers) {
-//        NSLog(@"container: %@", NSStringFromCGSize(item.size));
-//    }
-
-    //    NSLog(@"all containers: %@, \n\ncurrent: %@", layoutManager.textContainers, self.textview.textContainer);
+    NSLog(@"layoutManager: %@, \ncurrent textContainer: %@", self.textview.layoutManager, self.textview.textContainer);
 }
 
 #pragma mark - Private

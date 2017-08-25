@@ -43,7 +43,7 @@
     DSTextStorage *textStorage = [DSTextStorage new];
     self.textStorage = textStorage;
 
-#if 1
+#if 0
     NSTimeInterval t1 = [NSDate date].timeIntervalSince1970;
 
     for (NSUInteger idx = 0; idx < 1000; idx++) {
@@ -71,6 +71,28 @@
     DSLayoutManager *layoutManager = [DSLayoutManager new];
     layoutManager.allowsNonContiguousLayout = YES;
     [textStorage addLayoutManager:layoutManager];
+
+
+#if 0
+    [textStorage enumerateAttributesInRange:NSMakeRange(0, textStorage.length)
+                                   options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                                usingBlock:^(NSDictionary < NSString *, id > *_Nonnull attrs, NSRange range, BOOL *_Nonnull stop) {
+        NSLog(@"range: %@, attrs: %@\n", NSStringFromRange(range), attrs);
+    }];
+#elif 0
+    [textStorage enumerateAttribute:NSAttachmentAttributeName
+                           inRange:NSMakeRange(0, textStorage.length)
+                           options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                        usingBlock:^(id _Nullable value, NSRange range, BOOL *_Nonnull stop) {
+        if (value) {
+            NSLog(@"range: %@, value: %@\n", NSStringFromRange(range), value);
+
+//            NSTextAttachment *attachment = value;
+//            [layoutManager setAttachmentSize:CGSizeMake(200, 100)
+//                               forGlyphRange:range];
+        }
+    }];
+#endif
 
     UIPageViewController *pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
 
@@ -137,6 +159,7 @@
 
 #endif
 
+    self.layoutManager.textContainerSize = CGSizeMake(textContainer.size.width - textContainer.lineFragmentPadding * 2, textContainer.size.height - textContainer.lineFragmentPadding * 2);
     [self.layoutManager ensureLayoutForTextContainer:textContainer];
 }
 
@@ -147,10 +170,10 @@
     }
 
     DSTextContainer *existingContainer = [self.layoutManager findTextContainerForPage:index];
-
     PageContentViewController *contentVC = [PageContentViewController new];
 
     contentVC.textViewFrameEdge = UIEdgeInsetsMake(20, 10, 20, 10);
+//    contentVC.textViewContainerInset = UIEdgeInsetsMake(10, 20, 10, 20);
     contentVC.onTextContainerChanged = ^(DSTextContainer *textContainer) {
         [self _generateStorageForTextContainer:textContainer];
     };

@@ -10,31 +10,20 @@
 
 @implementation DSTextContainer
 
-//- (instancetype)initWithSize:(CGSize)size
-//{
-//    if (self = [super initWithSize:size]) {
-//        // Tracking the Size of a Text View
-//        // URL: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/TextStorageLayer/Tasks/TrackingSize.html#//apple_ref/doc/uid/20000927-CJBBIAAF
-//        self.widthTracksTextView = NO;
-//        self.heightTracksTextView = NO;
-//    }
-//
-//    return self;
-//}
-
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@; pageIndex: %ld", [super description], self.pageIndex];
 }
 
-- (void)setWidthTracksTextView:(BOOL)widthTracksTextView
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)proposedRect atIndex:(NSUInteger)characterIndex writingDirection:(NSWritingDirection)baseWritingDirection remainingRect:(nullable CGRect *)remainingRect
 {
-    [super setWidthTracksTextView:widthTracksTextView];
-}
+    CGRect rect = [super lineFragmentRectForProposedRect:proposedRect atIndex:characterIndex writingDirection:baseWritingDirection remainingRect:remainingRect];
 
-- (void)setHeightTracksTextView:(BOOL)heightTracksTextView
-{
-    [super setHeightTracksTextView:heightTracksTextView];
+    if (rect.size.height > 100) {
+        NSLog(@"lineFragmentRectForProposedRect: %@", NSStringFromCGRect(rect));
+    }
+
+    return rect;
 }
 
 @end

@@ -11,6 +11,8 @@
 
 @interface DSLayoutManager : NSLayoutManager
 
+@property (nonatomic, assign) CGSize textContainerSize;
+
 - (DSTextContainer *)findTextContainerForPage:(NSUInteger)pageIndex;
 
 - (BOOL)hasOutOfValidPageRange:(NSInteger)pageIndex;
