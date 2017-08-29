@@ -55,11 +55,17 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
     [super setAttachmentSize:attachmentSize forGlyphRange:glyphRange];
 }
 
-//- (CGSize)attachmentSizeForGlyphAtIndex:(NSUInteger)glyphIndex
-//{
-//    CGSize attachmentSize = [super attachmentSizeForGlyphAtIndex:glyphIndex];
-//    return GetScaledToFitSize(attachmentSize, self.textContainerSize);;
-//}
+- (CGSize)attachmentSizeForGlyphAtIndex:(NSUInteger)glyphIndex
+{
+    CGSize attachmentSize = [super attachmentSizeForGlyphAtIndex:glyphIndex];
+    return GetScaledToFitSize(attachmentSize, self.textContainerSize);;
+}
+
+- (void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(CGPoint)origin
+{
+    [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
+    //NSLog(@"%s\nRange: %@, point: %@", __func__, NSStringFromRange(glyphsToShow), NSStringFromCGPoint(origin));
+}
 
 // For debugging
 - (void)drawUnderlineForGlyphRange:(NSRange)glyphRange underlineType:(NSUnderlineStyle)underlineVal baselineOffset:(CGFloat)baselineOffset lineFragmentRect:(CGRect)lineRect lineFragmentGlyphRange:(NSRange)lineGlyphRange containerOrigin:(CGPoint)containerOrigin
@@ -161,7 +167,7 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
     }];
 
     if (attachment) {
-        NSLog(@"\nfragment: %@, used: %@, baseline: %.2f", NSStringFromCGRect(*lineFragmentRect), NSStringFromCGRect(*lineFragmentUsedRect), *baselineOffset);
+        NSLog(@"\nfragment: %@, used: %@, baseline: %.2f, range: %@", NSStringFromCGRect(*lineFragmentRect), NSStringFromCGRect(*lineFragmentUsedRect), *baselineOffset, NSStringFromRange(glyphRange));
 
         NSUInteger characterIndex = [layoutManager characterIndexForGlyphAtIndex:glyphRange.location];
         UIImage *image = [attachment imageForBounds:*lineFragmentRect textContainer:textContainer characterIndex:characterIndex];
@@ -170,7 +176,7 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
         CGFloat ratio = imageSize.width / imageSize.height;
         CGRect rect = *lineFragmentRect, usedRect = *lineFragmentUsedRect;
 
-#if 0
+#if 1
         CGFloat dy = *baselineOffset - imageSize.height;
 
         if (dy > 0) {
@@ -191,7 +197,7 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
             }
         }
 
-#elif 1
+#elif 0
         CGFloat h = imageSize.height, w = h * ratio;
 
         rect.size.width = w;
@@ -205,7 +211,7 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
         *lineFragmentRect = rect;
         *lineFragmentUsedRect = usedRect;
 
-        result = YES;
+//        result = YES;
         NSLog(@"\nFIXED fragment: %@, used: %@, baseline: %.2f", NSStringFromCGRect(*lineFragmentRect), NSStringFromCGRect(*lineFragmentUsedRect), *baselineOffset);
     }
 

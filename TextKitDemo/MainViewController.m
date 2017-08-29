@@ -65,7 +65,6 @@
     NSURL *url = [NSBundle.mainBundle URLForResource:@"blog" withExtension:@"rtfd"];
     NSAttributedString *attrString = [[NSAttributedString alloc] initWithURL:url options:@{ NSDocumentTypeDocumentAttribute: NSRTFDTextDocumentType } documentAttributes:nil error:nil];
     [textStorage appendAttributedString:attrString];
-    [textStorage appendAttributedString:attrString];
 #endif // if 1
 
     DSLayoutManager *layoutManager = [DSLayoutManager new];
