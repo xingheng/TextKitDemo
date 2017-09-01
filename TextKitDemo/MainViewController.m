@@ -34,7 +34,37 @@
 
 @end
 
+extern CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize);
+
 @implementation MainViewController
+
++(UIImage *)imageResize :(UIImage*)img andResizeTo:(CGSize)newSize
+{
+    CGFloat scale = [[UIScreen mainScreen]scale];
+    /*You can remove the below comment if you dont want to scale the image in retina   device .Dont forget to comment UIGraphicsBeginImageContextWithOptions*/
+    //UIGraphicsBeginImageContext(newSize);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, scale);
+    [img drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
++ (UIImage *)imageWithColor:(UIColor *)color width:(CGFloat)width height:(CGFloat)height
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, width, height);
+
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
+}
 
 - (void)viewDidLoad
 {
@@ -54,6 +84,16 @@
                                                                                        NSForegroundColorAttributeName: RANDOMCOLOR,
                                                                                        NSUnderlineStyleAttributeName: idx % 3 == 0 ? @1 : @0 }];
         [textStorage appendAttributedString:attrString];
+
+        if (idx % 800 == 0) {
+            UIImage *image = [[self class] imageWithColor:RANDOMCOLOR width:100 height:100];
+            NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+
+            attachment.image = image;
+            attachment.bounds = CGRectMake(0, 0, 100, 100);
+            NSAttributedString *attrImage = [NSAttributedString attributedStringWithAttachment:attachment];
+            [textStorage appendAttributedString:attrImage];
+        }
     }
 
     NSData *data = [textStorage.string dataUsingEncoding:NSUTF8StringEncoding];
@@ -67,31 +107,25 @@
     [textStorage appendAttributedString:attrString];
 #endif // if 1
 
+    [self.textStorage enumerateAttribute:NSAttachmentAttributeName
+                                 inRange:NSMakeRange(0, textStorage.length)
+                                 options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                              usingBlock:^(id value, NSRange range, BOOL *stop) {
+        if (value) {
+//            NSTextAttachment *attachment = value;
+//            UIImage *image = [UIImage imageWithData:attachment.fileWrapper.regularFileContents];
+//            CGSize imageSize = GetScaledToFitSize(image.size, CGSizeMake(300, 300));
+
+//            attachment.image = [[self class] imageResize:image andResizeTo:imageSize];
+//            attachment.bounds = (CGRect) {0, 0, imageSize };
+
+            NSLog(@"");
+        }
+    }];
+
     DSLayoutManager *layoutManager = [DSLayoutManager new];
     layoutManager.allowsNonContiguousLayout = YES;
     [textStorage addLayoutManager:layoutManager];
-
-
-#if 0
-    [textStorage enumerateAttributesInRange:NSMakeRange(0, textStorage.length)
-                                   options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                                usingBlock:^(NSDictionary < NSString *, id > *_Nonnull attrs, NSRange range, BOOL *_Nonnull stop) {
-        NSLog(@"range: %@, attrs: %@\n", NSStringFromRange(range), attrs);
-    }];
-#elif 0
-    [textStorage enumerateAttribute:NSAttachmentAttributeName
-                           inRange:NSMakeRange(0, textStorage.length)
-                           options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                        usingBlock:^(id _Nullable value, NSRange range, BOOL *_Nonnull stop) {
-        if (value) {
-            NSLog(@"range: %@, value: %@\n", NSStringFromRange(range), value);
-
-//            NSTextAttachment *attachment = value;
-//            [layoutManager setAttachmentSize:CGSizeMake(200, 100)
-//                               forGlyphRange:range];
-        }
-    }];
-#endif
 
     UIPageViewController *pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
 

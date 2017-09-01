@@ -66,8 +66,8 @@
 //    textview.editable = NO;
 
     // Force to disable the width/height tracks after textview's initlization and setScrollEnabled call.
-//    textContainer.heightTracksTextView = NO;
-//    textContainer.widthTracksTextView = NO;
+    textContainer.heightTracksTextView = NO;
+    textContainer.widthTracksTextView = NO;
 
     [self.view addSubview:textview];
     textview.translatesAutoresizingMaskIntoConstraints = NO;

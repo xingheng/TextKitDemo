@@ -10,6 +10,8 @@
 
 CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
 {
+    NSCParameterAssert(!CGSizeEqualToSize(maxSize, CGSizeZero));
+
     CGFloat width = sourceSize.width, height = sourceSize.height;
     CGFloat maxWidth = maxSize.width, maxHeight = maxSize.height;
 
@@ -42,29 +44,6 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
     }
 
     return self;
-}
-
-- (void)setAttachmentSize:(CGSize)attachmentSize forGlyphRange:(NSRange)glyphRange
-{
-#if 0
-    attachmentSize.width = MIN(self.textContainerSize.width, attachmentSize.width);
-    attachmentSize.height = MIN(self.textContainerSize.height, attachmentSize.height);
-#elif 0
-    attachmentSize = GetScaledToFitSize(attachmentSize, self.textContainerSize);
-#endif
-    [super setAttachmentSize:attachmentSize forGlyphRange:glyphRange];
-}
-
-- (CGSize)attachmentSizeForGlyphAtIndex:(NSUInteger)glyphIndex
-{
-    CGSize attachmentSize = [super attachmentSizeForGlyphAtIndex:glyphIndex];
-    return GetScaledToFitSize(attachmentSize, self.textContainerSize);;
-}
-
-- (void)drawGlyphsForGlyphRange:(NSRange)glyphsToShow atPoint:(CGPoint)origin
-{
-    [super drawGlyphsForGlyphRange:glyphsToShow atPoint:origin];
-    //NSLog(@"%s\nRange: %@, point: %@", __func__, NSStringFromRange(glyphsToShow), NSStringFromCGPoint(origin));
 }
 
 // For debugging
@@ -100,12 +79,9 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
     [[UIBezierPath bezierPathWithRect:lineRect] stroke];
 }
 
-- (void)ensureLayoutForTextContainer:(NSTextContainer *)container
+- (void)setAttachmentSize:(CGSize)attachmentSize forGlyphRange:(NSRange)glyphRange
 {
-    NSRange range = [self glyphRangeForTextContainer:container];
-    [self setAttachmentSize:self.textContainerSize forGlyphRange:range];
-
-    [super ensureLayoutForTextContainer:container];
+    [super setAttachmentSize:CGSizeMake(50, 50) forGlyphRange:glyphRange];
 }
 
 #pragma mark - Public
@@ -135,15 +111,31 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
 
 - (NSUInteger)layoutManager:(NSLayoutManager *)layoutManager shouldGenerateGlyphs:(const CGGlyph *)glyphs properties:(const NSGlyphProperty *)props characterIndexes:(const NSUInteger *)charIndexes font:(UIFont *)aFont forGlyphRange:(NSRange)glyphRange
 {
-//    NSLog(@"range: %@, char: %ld", NSStringFromRange(glyphRange), *charIndexes);
-//       [self setGlyphs:glyphs properties:props characterIndexes:charIndexes font:aFont forGlyphRange:glyphRange];
+    __block NSTextAttachment *attachment = nil;
+
+    [self.textStorage enumerateAttribute:NSAttachmentAttributeName
+                                 inRange:glyphRange
+                                 options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                              usingBlock:^(id value, NSRange range, BOOL *stop) {
+        if (value) {
+            attachment = value;
+            *stop = YES;
+        }
+    }];
+
+    if (attachment) {
+//        UIImage *image = [attachment imageForBounds:CGRectZero textContainer:nil characterIndex:*charIndexes];
+//        CGSize imageSize = GetScaledToFitSize(image.size, self.textContainerSize);
+    }
 
     return 0;
 }
 
-- (CGFloat)layoutManager:(NSLayoutManager *)layoutManager lineSpacingAfterGlyphAtIndex:(NSUInteger)glyphIndex withProposedLineFragmentRect:(CGRect)rect
+- (CGRect)layoutManager:(NSLayoutManager *)layoutManager boundingBoxForControlGlyphAtIndex:(NSUInteger)glyphIndex forTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(CGRect)proposedRect glyphPosition:(CGPoint)glyphPosition characterIndex:(NSUInteger)charIndex
 {
-    return 0;
+    NSLog(@"%s\nglyphIndex: %ld", __func__, glyphIndex);
+
+    return proposedRect;
 }
 
 /**
@@ -173,10 +165,10 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
         UIImage *image = [attachment imageForBounds:*lineFragmentRect textContainer:textContainer characterIndex:characterIndex];
         CGSize imageSize = GetScaledToFitSize(image.size, self.textContainerSize);
 
-        CGFloat ratio = imageSize.width / imageSize.height;
+        __unused CGFloat ratio = imageSize.width / imageSize.height;
         CGRect rect = *lineFragmentRect, usedRect = *lineFragmentUsedRect;
 
-#if 1
+#if 0
         CGFloat dy = *baselineOffset - imageSize.height;
 
         if (dy > 0) {
@@ -193,25 +185,36 @@ CGSize GetScaledToFitSize(CGSize sourceSize, CGSize maxSize)
             }
 
             if (rect.size.width > usedRect.size.width) {
-//                rect.size.width = usedRect.size.width - 30;
+                rect.size.width = usedRect.size.width;
             }
         }
 
-#elif 0
-        CGFloat h = imageSize.height, w = h * ratio;
+#elif 1
+        CGFloat h = 100, w = h * ratio;
 
         rect.size.width = w;
         rect.size.height = h;
         usedRect.size.width = w;
         usedRect.size.height = h;
 
+        CGFloat x = (w - imageSize.width) / 2, y = (h - imageSize.height) / 2;
+
+        x = 100;
+        y = 0;
+
+        rect.origin = CGPointMake(x, y);
+        usedRect.origin = CGPointMake(x, y);
+
+        attachment.bounds = rect;
+        [self setAttachmentSize:rect.size forGlyphRange:glyphRange];
+
         *baselineOffset = h;
-#endif
+#endif // if 0
 
         *lineFragmentRect = rect;
         *lineFragmentUsedRect = usedRect;
 
-//        result = YES;
+        result = YES;
         NSLog(@"\nFIXED fragment: %@, used: %@, baseline: %.2f", NSStringFromCGRect(*lineFragmentRect), NSStringFromCGRect(*lineFragmentUsedRect), *baselineOffset);
     }
 
